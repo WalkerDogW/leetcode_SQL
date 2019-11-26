@@ -29,8 +29,8 @@ delimiter //
 create procedure  getNthHighestSalary(in n int)
 begin
 	set n = n-1;
-	select n;
-	select distinct(salary) from Employee order by salary desc limit n,1 ;
+	select ifnull(
+	(select distinct(salary) from Employee order by salary desc limit n,1 ),null);
 end //
 delimiter ; 
 
