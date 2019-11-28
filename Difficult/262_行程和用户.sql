@@ -66,3 +66,12 @@ insert into Users (Users_Id, Banned, Role) values ('10', 'No', 'driver');
 insert into Users (Users_Id, Banned, Role) values ('11', 'No', 'driver');
 insert into Users (Users_Id, Banned, Role) values ('12', 'No', 'driver');
 insert into Users (Users_Id, Banned, Role) values ('13', 'No', 'driver');
+
+
+select t.Request_at as 'Day' ,
+round(sum(case t.Status when 'cancelled_by_driver' then 1 when 'cancelled_by_client' then 1 else 0 end)/count(t.Status),2) as 'Cancellation Rate'
+from Trips as t
+inner join Users as u on t.Client_Id = u.Users_Id
+where DATE_FORMAT(t.Request_at,'%Y-%m-%d')>='2013-10-01' and DATE_FORMAT(t.Request_at,'%Y-%m-%d')<='2013-10-03' and u.Banned = 'No'
+group by t.Request_at
+;
